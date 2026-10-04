@@ -1,0 +1,4 @@
+# Never commit personal data: the index, assistant exports, or OS clutter
+*.sqlite3*
+*.zip
+.DS_Store

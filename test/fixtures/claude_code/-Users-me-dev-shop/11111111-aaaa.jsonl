@@ -1,0 +1,9 @@
+{"type":"mode","mode":"normal","sessionId":"11111111-aaaa"}
+{"type":"user","isSidechain":false,"message":{"role":"user","content":"<system-reminder>ignore me</system-reminder>Set up nginx for the staging box"},"timestamp":"2026-08-01T10:00:00.000Z","cwd":"/Users/me/dev/shop"}
+{"type":"assistant","isSidechain":false,"message":{"role":"assistant","content":[{"type":"thinking","thinking":"secret reasoning about kubernetes"},{"type":"text","text":"Here is a proxy_pass config for staging."},{"type":"tool_use","name":"Bash","input":{"command":"ls"}}]},"timestamp":"2026-08-01T10:00:05.000Z","cwd":"/Users/me/dev/shop"}
+{"type":"user","isSidechain":false,"message":{"role":"user","content":[{"type":"tool_result","content":"Gemfile"}]},"timestamp":"2026-08-01T10:00:06.000Z"}
+{"type":"assistant","isSidechain":true,"message":{"role":"assistant","content":[{"type":"text","text":"sidechain chatter about redis"}]},"timestamp":"2026-08-01T10:00:07.000Z"}
+{"type":"ai-title","aiTitle":"Nginx staging setup","sessionId":"11111111-aaaa"}
+{"type":"user","isMeta":true,"message":{"role":"user","content":[{"type":"text","text":"[Image: source: /tmp/screenshot.png]"}]},"timestamp":"2026-08-01T10:00:08.000Z"}
+{"type":"user","isCompactSummary":true,"message":{"role":"user","content":"This session is being continued from a previous conversation about memcached"},"timestamp":"2026-08-01T10:00:09.000Z"}
+{"type":"user","message":{"role":"user","content":"partial line that was still being writ
