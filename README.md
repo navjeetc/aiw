@@ -47,12 +47,13 @@ shell, wrap the double quotes in single quotes: `aiw '"packing list"'`.
 | Codex       | `~/.codex/sessions`, `~/.codex/archived_sessions` | Thread names come from `session_index.jsonl`. Guardian/subagent sessions are skipped. |
 | Grok Bot    | `~/Library/Application Support/Grok Bot/sand-client-persistence` | The desktop app's local copy of each bot's transcript; the full history stays on xAI's servers. Each bot (e.g. Travel, Recipes) is one conversation. |
 | Claude      | `conversations-*.zip` (or older `data-*.zip`) in `~/Downloads` or `~/Documents` | claude.ai export (Settings → Privacy → Export data). The emailed manifest lists several zips; only the conversations one is needed. Re-export to pick up new chats. Results link back to `claude.ai/chat/<id>`. |
+| ChatGPT     | Export folder (or zip) in `~/Documents` or `~/Downloads`, recognized by its `chat.html` | chatgpt.com export (Settings → Data controls → Export data). Only the newest export is read. Codex cloud tasks in `codex.json` are filed under Codex (no timestamps, so search only). Results link back to chatgpt.com. |
 | Muse        | `EYI Package_*.zip` in `~/Documents` or `~/Downloads` | Exported from the Muse desktop app. Muse keeps nothing on disk, so re-export to pick up new chats. Its one long chat is split into one conversation per day. |
 
 Only what you typed and what the assistant replied gets indexed. Thinking, tool calls, tool output and
 injected context (AGENTS.md, system reminders, environment blocks) are left out.
 
-Coming next: the ChatGPT export. See [docs/ROADMAP.md](docs/ROADMAP.md) for planned
+See [docs/ROADMAP.md](docs/ROADMAP.md) for planned
 features such as natural-language search and AI recap summaries.
 
 ## Setup

@@ -7,6 +7,7 @@ and every feature works without AI first, with AI making it better.
 
 - Claude Code, Codex and Grok Bot importers (local files, auto-refreshed on every search)
   - Grok Bot: reads the desktop app's local transcript copies, no export needed
+- Claude and ChatGPT export importers (2026-10-04/05), including Codex cloud tasks from the ChatGPT export
 - Muse importer (2026-10-04): reads the Muse desktop app's own export (`EYI Package_*.zip`) from
   ~/Documents or ~/Downloads. Muse keeps no conversations on disk, so new chats need a fresh export.
 - Full-text search with stemming, phrases, `--apps`, `--source`, and resume commands
@@ -111,7 +112,6 @@ start, so a long-running session shows up on the days you actually worked in it.
 
 ## Still on the list from the original plan
 
-- ChatGPT export importer (Claude export done 2026-10-04)
 - screenpipe as an optional live feed for apps without local history
 - MCP server so Claude Code itself can ask "where did I work on X?"
 - Optional web UI on the same SQLite file

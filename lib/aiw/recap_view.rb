@@ -5,8 +5,15 @@ module Aiw
     RESUME = {
       "Claude Code" => "claude --resume %s",
       "Codex"       => "codex resume %s",
-      "Claude"      => "open https://claude.ai/chat/%s"
+      "Claude"      => "open https://claude.ai/chat/%s",
+      "ChatGPT"     => "open https://chatgpt.com/c/%s"
     }
+
+    # How to get back to a conversation, if there's a way. Codex cloud tasks ("task_…") live on the web.
+    def self.resume_command(source, id)
+      template = source == "Codex" && id.start_with?("task_") ? "open https://chatgpt.com/codex/tasks/%s" : RESUME[source]
+      format(template, id) if template
+    end
 
     # How many of your prompts to show under each conversation.
     PROMPTS = 3
@@ -37,7 +44,8 @@ module Aiw
     def entry_details(entry)
       lines = entry.prompts.first(PROMPTS).map { "• #{clip(it)}" }
       lines << dim("… and #{pluralize(entry.prompts.size - PROMPTS, "more prompt")}") if entry.prompts.size > PROMPTS
-      lines << dim(format(RESUME[entry.source], entry.external_id)) if RESUME[entry.source]
+      resume = self.class.resume_command(entry.source, entry.external_id)
+      lines << dim(resume) if resume
       lines
     end
 

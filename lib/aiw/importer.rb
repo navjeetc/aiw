@@ -19,7 +19,7 @@ module Aiw
           skipped += 1
         else
           conversations = Array(parse(path)).select { it.messages.any? }
-          conversations.each { store.save(it) }
+          store.transaction { conversations.each { store.save(it) } }
           if conversations.any?
             imported += conversations.size
           else

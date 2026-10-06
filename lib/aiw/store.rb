@@ -10,7 +10,15 @@ module Aiw
       @db = SQLite3::Database.new(path)
       @db.results_as_hash = true
       @db.busy_timeout = 5000
+      # WAL lets a search read while an import writes, and NORMAL sync skips an fsync per transaction.
+      @db.execute("PRAGMA journal_mode = WAL")
+      @db.execute("PRAGMA synchronous = NORMAL")
       migrate
+    end
+
+    # Joins an outer transaction if there is one, so an importer can save a whole file at once.
+    def transaction(&)
+      db.transaction_active? ? yield : db.transaction(&)
     end
 
     # Files are only re-read when their size or mtime changed since the last import.
@@ -28,7 +36,7 @@ module Aiw
     end
 
     def save(conversation)
-      db.transaction do
+      transaction do
         existing = db.get_first_value(
           "SELECT id FROM conversations WHERE source = ? AND external_id = ?",
           [ conversation.source, conversation.external_id ])

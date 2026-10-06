@@ -74,8 +74,8 @@ class RecapCLITest < Aiw::TestCase
   end
 
   def test_says_when_an_assistant_is_not_indexed
-    assert_output(nil, "aiw: chatgpt isn't indexed yet. aiw currently reads: Claude Code, Claude, Codex, Grok Bot, Muse\n") do
-      assert_raises(SystemExit) { Aiw::CLI.new(StringIO.new, store:).run(%w[ recap --source chatgpt ]) }
+    assert_output(nil, "aiw: copilot isn't indexed yet. aiw currently reads: Claude Code, Claude, ChatGPT, Codex, Grok Bot, Muse\n") do
+      assert_raises(SystemExit) { Aiw::CLI.new(StringIO.new, store:).run(%w[ recap --source copilot ]) }
     end
   end
 

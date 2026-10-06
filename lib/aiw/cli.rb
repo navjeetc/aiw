@@ -2,7 +2,7 @@ require "optparse"
 
 module Aiw
   class CLI
-    IMPORTERS = [ Importers::ClaudeCode, Importers::Claude, Importers::Codex, Importers::GrokBot, Importers::Muse ]
+    IMPORTERS = [ Importers::ClaudeCode, Importers::Claude, Importers::ChatGPT, Importers::Codex, Importers::GrokBot, Importers::Muse ]
 
     USAGE = <<~TEXT
       Usage:
@@ -144,11 +144,11 @@ module Aiw
       end
 
       def print_hit(hit)
-        resume = RecapView::RESUME[hit.source]
+        resume = RecapView.resume_command(hit.source, hit.external_id)
         @out.puts
         @out.puts [ bold(hit.source.ljust(12)), date(hit.updated_at), dim(project(hit.project)), hit.title ].compact.join("  ")
         @out.puts "  " + highlight(hit.snippet.gsub(/\s+/, " "))
-        @out.puts dim("  #{format(resume, hit.external_id)}") if resume
+        @out.puts dim("  #{resume}") if resume
       end
 
       def project(path)
