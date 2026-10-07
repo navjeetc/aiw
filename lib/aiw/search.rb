@@ -17,18 +17,21 @@ module Aiw
     end
 
     # Every word must appear in the same message; "quoted words" match as a phrase.
-    def call(query, source: nil, limit: 20, exact: false)
+    # With a window, only messages sent inside it count.
+    def call(query, source: nil, limit: 20, exact: false, window: nil)
       terms = self.class.terms(query)
       return [] if terms.empty?
 
       match = terms.map { %("#{it.gsub('"', '""')}") }.join(" ")
       pattern = terms.map { |term| "(?=.*\\b#{term.split.map { Regexp.escape(it) }.join('\W+')}\\b)" }.join
 
-      rows = @store.db.execute(<<~SQL, [ pattern, match, exact ? 1 : 0, source, source, limit ])
+      from, to = window&.bounds
+
+      rows = @store.db.execute(<<~SQL, [ pattern, match, from, from, to, exact ? 1 : 0, source, source, limit ])
         WITH ranked AS MATERIALIZED (
           SELECT conversation_id, rank, aiw_exact(text, ?) AS exact,
                  snippet(messages, 0, char(1), char(2), '…', 14) AS snippet
-          FROM messages WHERE messages MATCH ?
+          FROM messages WHERE messages MATCH ? AND (? IS NULL OR created_at BETWEEN ? AND ?)
         ),
         best AS (
           SELECT *, row_number() OVER (PARTITION BY conversation_id ORDER BY exact DESC, rank) AS position,

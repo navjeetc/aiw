@@ -142,3 +142,27 @@ class ExactWordsCLITest < Aiw::TestCase
     assert_includes out.string, "── Related word forms (use -e for exact words only) ──"
   end
 end
+
+class SearchWindowTest < Aiw::TestCase
+  def setup
+    import_fixtures # Claude Code nginx chat on Aug 1, Codex certificates chat on Aug 12
+  end
+
+  def test_only_counts_messages_inside_the_window
+    window = Aiw::Window.parse("1w", now: Time.utc(2026, 8, 13))
+
+    assert_equal [ "Codex" ], search("certificates", window:).map(&:source)
+    assert_empty search("nginx", window:)
+  end
+
+  def test_without_a_window_searches_everything
+    assert_equal [ "Claude Code" ], search("nginx").map(&:source)
+  end
+
+  def test_the_cli_says_which_window_it_searched
+    out = StringIO.new
+    Aiw::CLI.new(out, store:, importers: []).run(%w[ search nginx --since 2026-07-01 ])
+
+    assert_includes out.string, "Since Jul 1, found in: Claude Code (1)"
+  end
+end

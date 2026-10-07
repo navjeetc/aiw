@@ -21,6 +21,7 @@ Codex         2026-08-12  infra  Rotate load balancer certs
 aiw WORDS...              search (every word must appear in one message)
 aiw '"two words"' more    quoted words match as a phrase (single quotes keep them past the shell)
 aiw -e WORDS...           exact words only (packing, not packed or pack)
+aiw WORDS... --since 1w   only messages from the last week (also 24h, 3d, today, yesterday, 2026-10-01)
 aiw --apps WORDS...       only list which assistants matched
 aiw -s grok WORDS...      search one assistant (loose names work: grok, grokbot, codex)
 aiw -n 50 WORDS...        show more results (default 20)

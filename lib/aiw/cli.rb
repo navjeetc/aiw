@@ -10,6 +10,7 @@ module Aiw
         aiw WORDS...                    Same as search
         aiw import                      Pick up new sessions from every assistant
         aiw rebuild                     Re-read every session from scratch
+        aiw WORDS... --since 1w         Search only the last week (also 24h, 3d, today, a date)
         aiw recap [--since 3d]          What did I work on lately? (default: last 24 hours)
         aiw stats                       What's in the index
 
@@ -53,7 +54,7 @@ module Aiw
           o.on("-e", "--exact", "Only the exact words, not related forms (packing, not packed)") { options[:exact] = true }
           o.on("-s", "--source NAME", "Only search one assistant, e.g. Codex") { options[:source] = it }
           o.on("-n", "--limit N", Integer, "Max conversations to show (default 20)") { options[:limit] = it }
-          o.on("--since SPAN", "Recap window: 24h, 3d, 1w, today, yesterday, 2026-10-01") { options[:since] = it }
+          o.on("--since SPAN", "Only this time window: 24h, 3d, 1w, today, yesterday, 2026-10-01") { options[:since] = it }
           o.on("--markdown", "Recap as Markdown, for notes or a standup") { options[:markdown] = true }
           o.on("--all", "Recap: print everything instead of the collapsible view") { options[:all] = true }
           o.on("--no-import", "Skip the quick refresh first") { options[:refresh] = false }
@@ -102,15 +103,16 @@ module Aiw
         @out.puts "\nDatabase: #{Aiw.db_path}"
       end
 
-      def search(query, apps: false, source: nil, limit: 20, exact: false, refresh: true, **)
+      def search(query, apps: false, source: nil, limit: 20, exact: false, since: nil, refresh: true, **)
         return @out.puts("What should I look for? e.g. aiw nginx staging") if query.strip.empty?
 
+        window = Window.parse(since) if since
         import if refresh
-        hits = Search.new(store).call(query, source:, exact:, limit: 1_000)
-        return @out.puts("No assistant conversations mention “#{query}”.") if hits.empty?
+        hits = Search.new(store).call(query, source:, exact:, window:, limit: 1_000)
+        return @out.puts("No assistant conversations mention “#{query}”#{" (#{window.label.downcase})" if window}.") if hits.empty?
 
         tally = hits.map(&:source).tally.sort_by { -it.last }
-        @out.puts bold("Found in: ") + tally.map { |name, count| "#{name} (#{count})" }.join(", ")
+        @out.puts bold(window ? "#{window.label}, found in: " : "Found in: ") + tally.map { |name, count| "#{name} (#{count})" }.join(", ")
         return if apps
 
         shown = hits.first(limit)

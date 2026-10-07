@@ -94,3 +94,26 @@ class RecapCLITest < Aiw::TestCase
       out.string
     end
 end
+
+class WindowTest < Minitest::Test
+  NOW = Time.new(2026, 10, 7, 15, 30)
+
+  def test_relative_spans
+    assert_equal [ NOW - 7 * 86_400, "Last week" ], parse("1w")
+    assert_equal [ NOW - 3 * 86_400, "Last 3 days" ], parse("3d")
+    assert_equal [ NOW - 12 * 3600, "Last 12 hours" ], parse("12h")
+  end
+
+  def test_calendar_days
+    assert_equal [ Time.new(2026, 10, 7), "Today" ], parse("today")
+    assert_equal [ Time.new(2026, 10, 6), "Since yesterday" ], parse("yesterday")
+    assert_equal [ Time.new(2026, 10, 1), "Since Oct 1" ], parse("2026-10-01")
+  end
+
+  def test_ends_now
+    assert_equal NOW, Aiw::Window.parse("1w", now: NOW).finish
+  end
+
+  private
+    def parse(spec) = Aiw::Window.parse(spec, now: NOW).then { [ it.start, it.label ] }
+end
