@@ -116,6 +116,13 @@ class ExactWordsTest < Aiw::TestCase
     assert_equal [ "pack" ], hits.reject(&:exact).map(&:external_id)
   end
 
+  def test_lists_the_most_recent_conversations_first
+    save "older", "Pack the tent", at: "2026-07-01T10:00:00.000Z"
+    save "newest", "Pack the stove", at: "2026-09-01T10:00:00.000Z"
+
+    assert_equal %w[ newest pack older ], search("pack", exact: true).map(&:external_id)
+  end
+
   def test_exact_keeps_only_the_words_you_typed
     assert_equal %w[ packed packing ].sort, search("packing", exact: true).map(&:external_id).sort
     assert_equal [ "pack" ], search("pack", exact: true).map(&:external_id)
@@ -126,10 +133,10 @@ class ExactWordsTest < Aiw::TestCase
   end
 
   private
-    def save(id, text)
+    def save(id, text, at: "2026-08-01T10:00:00.000Z")
       store.save(Aiw::Conversation.new(source: "Codex", external_id: id, title: nil, project: nil,
-        started_at: "2026-08-01T10:00:00.000Z", updated_at: "2026-08-01T10:00:00.000Z", path: id,
-        messages: [ Aiw::Message.new(role: "user", text:, created_at: "2026-08-01T10:00:00.000Z") ]))
+        started_at: at, updated_at: at, path: id,
+        messages: [ Aiw::Message.new(role: "user", text:, created_at: at) ]))
     end
 end
 

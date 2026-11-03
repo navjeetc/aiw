@@ -4,7 +4,8 @@ module Aiw
   # Full-text search over all imported messages, collapsed to one hit per conversation.
   #
   # The index stems words ("packing", "packed" and "pack" all become "pack"), which finds related forms.
-  # Messages containing the exact words you typed rank first, and exact: true keeps only those.
+  # Messages containing the exact words you typed come first, and exact: true keeps only those.
+  # Within each group the most recently active conversations come first.
   class Search
     Hit = Data.define(:source, :external_id, :title, :project, :updated_at, :snippet, :matches, :exact)
 
@@ -41,7 +42,7 @@ module Aiw
         SELECT c.source, c.external_id, c.title, c.project, c.updated_at, best.snippet, best.matches, best.exact = 1 AS exact
         FROM best JOIN conversations c ON c.id = best.conversation_id
         WHERE best.position = 1 AND (? IS NULL OR c.source = ? COLLATE NOCASE)
-        ORDER BY best.exact DESC, best.rank
+        ORDER BY best.exact DESC, c.updated_at IS NULL, c.updated_at DESC, best.rank
         LIMIT ?
       SQL
 
