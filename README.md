@@ -57,6 +57,20 @@ injected context (AGENTS.md, system reminders, environment blocks) are left out.
 See [docs/ROADMAP.md](docs/ROADMAP.md) for planned
 features such as natural-language search and AI recap summaries.
 
+## Privacy
+
+Everything stays on your machine. aiw makes no network requests: it reads your assistants' local
+files and exports, and writes one SQLite index at `~/.aiw/history.sqlite3`. Nothing is uploaded and
+there is no telemetry. The only URLs it touches are the claude.ai and chatgpt.com links it opens in
+your browser when you pick a result.
+
+aiw only reads from your assistants' folders; it never changes or deletes them. The index holds the full
+text of your conversations, so treat it as being as private as the chats themselves. Deleting it
+removes everything aiw stored.
+
+If a future feature (such as AI recap summaries on the [roadmap](docs/ROADMAP.md)) ever sends text to
+an outside model, it will be opt-in and clearly labelled.
+
 ## Setup
 
 Requires Ruby 3.4 and the `sqlite3` gem.
@@ -74,3 +88,7 @@ scratch. Set `AIW_DEBUG=1` to see files that failed to import.
 ```
 bundle exec rake
 ```
+
+## License
+
+MIT. See [LICENSE](LICENSE).
