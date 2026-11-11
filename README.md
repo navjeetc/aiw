@@ -216,7 +216,8 @@ To update aiw later, run `git pull` and then `bundle install` in the folder you 
   run `bundle install` again.
 - **`bundle install` fails while compiling**: install a C compiler and try again. On macOS, run
   `xcode-select --install`. On Debian or Ubuntu, run `sudo apt install build-essential`. On Fedora,
-  run `sudo dnf install gcc make ruby-devel`.- **A source shows 0 conversations**: run `AIW_DEBUG=1 aiw import` to see which files failed and why.
+  run `sudo dnf install gcc make ruby-devel`.
+- **A source shows 0 conversations**: run `AIW_DEBUG=1 aiw import` to see which files failed and why.
 
 ### Where things live
 
