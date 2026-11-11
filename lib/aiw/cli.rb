@@ -31,6 +31,7 @@ module Aiw
       parser = option_parser(options)
       # Terminals send UTF-8, but without a UTF-8 locale Ruby tags arguments as ASCII or binary.
       args = parser.parse(argv.map { it.dup.force_encoding(Encoding::UTF_8) })
+      return @out.puts("aiw #{VERSION}") if options[:version]
       options[:source] = known_source(options[:source]) if options[:source]
 
       case args.first
@@ -59,6 +60,7 @@ module Aiw
           o.on("--markdown", "Recap as Markdown, for notes or a standup") { options[:markdown] = true }
           o.on("--all", "Recap: print everything instead of the collapsible view") { options[:all] = true }
           o.on("--no-import", "Skip the quick refresh first") { options[:refresh] = false }
+          o.on("-v", "--version", "Print the version") { options[:version] = true }
         end
       end
 

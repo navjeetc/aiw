@@ -31,6 +31,7 @@ aiw recap --markdown      paste into a standup, weekly review or journal
 aiw import                refresh the index and show counts
 aiw rebuild               re-read every session from scratch
 aiw stats                 what's indexed
+aiw -v                    which version you have (also --version)
 ```
 
 Each search first picks up new or changed sessions (about 0.1s when nothing changed), so there's no
@@ -56,6 +57,7 @@ injected context (AGENTS.md, system reminders, environment blocks) are left out.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for planned
 features such as natural-language search and AI recap summaries.
+[CHANGELOG.md](CHANGELOG.md) lists what changed in each release.
 
 ## Privacy
 
