@@ -6,9 +6,13 @@ All notable changes to aiw are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-11
+
 ### Added
 
 - `aiw -v` and `aiw --version` print the version.
+- Install with Homebrew: `brew install navjeetc/tap/aiw`. It brings its own Ruby, so you don't need Ruby
+  set up first.
 
 ## [0.1.1] - 2026-11-11
 
@@ -35,6 +39,7 @@ First public release.
 - Web results print the command that opens them on your platform: `open`, `xdg-open` or `start`.
 - Runs entirely locally, with no network requests.
 
-[Unreleased]: https://github.com/navjeetc/aiw/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/navjeetc/aiw/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/navjeetc/aiw/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/navjeetc/aiw/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/navjeetc/aiw/releases/tag/v0.1.0
