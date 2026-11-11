@@ -30,7 +30,7 @@ module Aiw
         if path.end_with?(".zip")
           parse_zip(path)
         else
-          conversations_from(File.basename(path), File.read(path), path)
+          conversations_from(File.basename(path), read(path), path)
         end
       end
 

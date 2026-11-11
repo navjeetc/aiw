@@ -43,7 +43,7 @@ module Aiw
         end
 
         def parse_legacy(path)
-          data = JSON.parse(File.read(path))
+          data = JSON.parse(read(path))
           session = data["session"] || {}
           messages = Array(data["items"]).filter_map { message_from(it, session["timestamp"]) }
 

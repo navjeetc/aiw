@@ -36,9 +36,14 @@ module Aiw
     end
 
     private
+      # Assistants write UTF-8 JSON. Say so explicitly: without a UTF-8 locale (cron, ssh, Docker) Ruby
+      # would read these files as US-ASCII, and parsing the first non-ASCII character would fail.
+      # Stray invalid bytes become U+FFFD so one damaged message doesn't stop the whole import.
+      def read(path) = File.read(path, encoding: Encoding::UTF_8).scrub
+
       def each_json_line(path)
-        File.foreach(path) do |line|
-          yield JSON.parse(line)
+        File.foreach(path, encoding: Encoding::UTF_8) do |line|
+          yield JSON.parse(line.scrub)
         rescue JSON::ParserError
           next # a session still being written can end with a partial line
         end

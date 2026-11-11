@@ -29,7 +29,8 @@ module Aiw
     def run(argv)
       options = { limit: 20, refresh: true }
       parser = option_parser(options)
-      args = parser.parse(argv)
+      # Terminals send UTF-8, but without a UTF-8 locale Ruby tags arguments as ASCII or binary.
+      args = parser.parse(argv.map { it.dup.force_encoding(Encoding::UTF_8) })
       options[:source] = known_source(options[:source]) if options[:source]
 
       case args.first
