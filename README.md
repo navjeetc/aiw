@@ -31,6 +31,7 @@ aiw recap --markdown      paste into a standup, weekly review or journal
 aiw import                refresh the index and show counts
 aiw rebuild               re-read every session from scratch
 aiw stats                 what's indexed
+aiw -v                    which version you have (also --version)
 ```
 
 Each search first picks up new or changed sessions (about 0.1s when nothing changed), so there's no

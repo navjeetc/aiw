@@ -1,6 +1,7 @@
 require "json"
 require "time"
 require "sqlite3"
+require_relative "aiw/version"
 
 module Aiw
   Conversation = Data.define(:source, :external_id, :title, :project, :started_at, :updated_at, :path, :messages)
