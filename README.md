@@ -57,6 +57,7 @@ injected context (AGENTS.md, system reminders, environment blocks) are left out.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for planned
 features such as natural-language search and AI recap summaries.
+[CHANGELOG.md](CHANGELOG.md) lists what changed in each release.
 
 ## Privacy
 
