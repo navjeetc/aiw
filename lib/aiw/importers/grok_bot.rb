@@ -25,7 +25,7 @@ module Aiw
 
       def parse(path)
         id = blobs.fetch(path).split(".").last
-        entries = JSON.parse(File.read(path)).dig("value", "entries") || []
+        entries = JSON.parse(read(path)).dig("value", "entries") || []
         messages = entries.filter_map { message_from(it) }
 
         Conversation.new(
@@ -47,7 +47,7 @@ module Aiw
         def bot_names
           @bot_names ||= begin
             roster = blobs.key(blobs.values.find { it.end_with?(".roster.last-roster") })
-            rows = roster ? JSON.parse(File.read(roster)).dig("value", "rows") : []
+            rows = roster ? JSON.parse(read(roster)).dig("value", "rows") : []
             Array(rows).to_h { [ it["id"], it["name"] ] }
           end
         end
