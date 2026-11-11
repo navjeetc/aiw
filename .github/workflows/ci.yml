@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          # Latest 3.4.x, not .ruby-version's exact 3.4.1: newer runner images only carry each
+          # series' latest patch, and it's what a fresh `mise use ruby@3.4` install gets.
+          ruby-version: "3.4"
+          bundler-cache: true
+
+      - run: bundle exec rake
