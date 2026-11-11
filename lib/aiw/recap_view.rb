@@ -4,15 +4,31 @@ module Aiw
   class RecapView
     RESUME = {
       "Claude Code" => "claude --resume %s",
-      "Codex"       => "codex resume %s",
-      "Claude"      => "open https://claude.ai/chat/%s",
-      "ChatGPT"     => "open https://chatgpt.com/c/%s"
+      "Codex"       => "codex resume %s"
     }
 
+    WEB = {
+      "Claude"  => "https://claude.ai/chat/%s",
+      "ChatGPT" => "https://chatgpt.com/c/%s"
+    }
+
+    # The command that opens a URL in the browser on this machine.
+    OPENER =
+      case RbConfig::CONFIG["host_os"]
+      when /darwin/                then "open"
+      when /mswin|mingw|cygwin/    then "start"
+      else                              "xdg-open"
+      end
+
     # How to get back to a conversation, if there's a way. Codex cloud tasks ("task_…") live on the web.
-    def self.resume_command(source, id)
-      template = source == "Codex" && id.start_with?("task_") ? "open https://chatgpt.com/codex/tasks/%s" : RESUME[source]
-      format(template, id) if template
+    def self.resume_command(source, id, opener: OPENER)
+      if source == "Codex" && id.start_with?("task_")
+        "#{opener} https://chatgpt.com/codex/tasks/#{id}"
+      elsif (url = WEB[source])
+        "#{opener} #{format(url, id)}"
+      elsif (command = RESUME[source])
+        format(command, id)
+      end
     end
 
     # How many of your prompts to show under each conversation.

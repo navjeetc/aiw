@@ -58,7 +58,7 @@ class ClaudeImporterTest < Aiw::TestCase
     Aiw::CLI.new(out, store:, importers: []).run(%w[ lisbon --source claude ])
 
     assert_includes out.string, "Found in: Claude (1)"
-    assert_includes out.string, "open https://claude.ai/chat/c-1"
+    assert_includes out.string, "#{Aiw::RecapView::OPENER} https://claude.ai/chat/c-1"
   end
 
   private
