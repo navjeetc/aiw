@@ -77,8 +77,8 @@ class ChatGPTImporterTest < Aiw::TestCase
     out = StringIO.new
     Aiw::CLI.new(out, store:, importers: []).run(%w[ sourdough ])
 
-    assert_includes out.string, "open https://chatgpt.com/c/c-1"
-    assert_includes out.string, "open https://chatgpt.com/codex/tasks/task_e_9"
+    assert_includes out.string, "#{Aiw::RecapView::OPENER} https://chatgpt.com/c/c-1"
+    assert_includes out.string, "#{Aiw::RecapView::OPENER} https://chatgpt.com/codex/tasks/task_e_9"
   end
 
   def test_reads_a_zipped_export
