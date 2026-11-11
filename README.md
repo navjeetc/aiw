@@ -108,7 +108,9 @@ mise use -g ruby@3.4
 ruby -v
 ```
 
-rbenv, chruby and asdf work too. aiw's `.ruby-version` file names the exact version it was developed with.
+rbenv, chruby and asdf work too. aiw's `.ruby-version` file asks for Ruby 3.4.1, and those tools
+switch to it as soon as you `cd` into the folder. So install that exact version even if you already
+have another 3.4. Step 2 shows how to check.
 
 Bundler, which installs the gems aiw needs, comes with Ruby 3.4, so there's nothing else to install.
 
@@ -117,10 +119,23 @@ Bundler, which installs the gems aiw needs, comes with Ruby 3.4, so there's noth
 ```
 git clone https://github.com/navjeetc/aiw.git
 cd aiw
+ruby -v                                 # check again, now inside the folder
 bundle install                          # installs sqlite3 and rubyzip
 mkdir -p ~/.local/bin
 ln -s "$PWD/bin/aiw" ~/.local/bin/aiw   # or anywhere on your PATH
 ```
+
+If `cd` or `ruby -v` says 3.4.1 isn't installed, or `ruby -v` shows a different version, your version manager has read `.ruby-version`.
+Install that version and run `ruby -v` again:
+
+| Version manager | Command |
+|-----------------|---------|
+| rbenv           | `rbenv install 3.4.1` |
+| chruby          | `ruby-install ruby 3.4.1`, then open a new shell |
+| asdf            | `asdf install ruby 3.4.1` |
+| mise            | `mise install ruby@3.4.1` |
+
+Homebrew users without a version manager can skip this. Their Ruby ignores `.ruby-version`.
 
 If `~/.local/bin` isn't on your PATH yet (`aiw` gives "command not found"), add it and open a new shell:
 
