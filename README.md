@@ -79,13 +79,25 @@ aiw is a Ruby command-line tool that needs Ruby 3.4 or newer.
 | Platform | Status |
 |----------|--------|
 | macOS    | Supported. This is where aiw is built and used every day. |
-| Linux    | Should work, but nobody has tested it yet. Every source except Grok Bot (a Mac app) reads the same `~/` paths. Reports are welcome. |
+| Linux    | Should work. The tests run on Ubuntu in CI, but nobody uses it there day to day yet. Every source except Grok Bot (a Mac app) reads the same `~/` paths. Reports are welcome. |
 | Windows  | Untested. Use [WSL](https://learn.microsoft.com/windows/wsl/install) and follow the Linux steps. Note that aiw inside WSL sees the Linux home folder, not your Windows one. |
 
 Web results print the right command to open them for your platform: `open` on macOS, `xdg-open` on
 Linux, `start` on Windows.
 
-If you already use Ruby 3.4, skip to [Install aiw](#2-install-aiw).
+### Install with Homebrew (easiest)
+
+```
+brew install navjeetc/tap/aiw
+```
+
+Homebrew installs the Ruby that aiw runs on, so skip steps 1 and 2 and go straight to
+[Build the index](#3-build-the-index). Upgrade later with `brew upgrade aiw`.
+
+### Or install from source
+
+Use this route if you want to change aiw or don't use Homebrew. If you already use Ruby 3.4, skip to
+[Install aiw](#2-install-aiw).
 
 ### 1. Get Ruby 3.4
 
