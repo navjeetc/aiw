@@ -62,7 +62,8 @@ features such as natural-language search and AI recap summaries.
 Everything stays on your machine. aiw makes no network requests: it reads your assistants' local
 files and exports, and writes one SQLite index at `~/.aiw/history.sqlite3`. Nothing is uploaded and
 there is no telemetry. Results show a command for getting back to the conversation (`claude --resume …`,
-`codex resume …` or `open https://claude.ai/chat/…`). aiw only prints it; nothing runs unless you do.
+`codex resume …`, or a browser command such as `open https://claude.ai/chat/…` for web chats). aiw only
+prints it; nothing runs unless you do.
 
 aiw only reads from your assistants' folders; it never changes or deletes them. The index holds the full
 text of your conversations, so treat it as being as private as the chats themselves. Deleting it
@@ -73,8 +74,16 @@ an outside model, it will be opt-in and clearly labelled.
 
 ## Setup
 
-aiw is a Ruby command-line tool. It needs Ruby 3.4 or newer and was built on macOS. Linux should work
-for Claude Code, Codex and the export-based sources but is untested, and Grok Bot is macOS only.
+aiw is a Ruby command-line tool that needs Ruby 3.4 or newer.
+
+| Platform | Status |
+|----------|--------|
+| macOS    | Supported. This is where aiw is built and used every day. |
+| Linux    | Should work, but nobody has tested it yet. Every source except Grok Bot (a Mac app) reads the same `~/` paths. Reports are welcome. |
+| Windows  | Untested. Use [WSL](https://learn.microsoft.com/windows/wsl/install) and follow the Linux steps. Note that aiw inside WSL sees the Linux home folder, not your Windows one. |
+
+Web results print the right command to open them for your platform: `open` on macOS, `xdg-open` on
+Linux, `start` on Windows.
 
 If you already use Ruby 3.4, skip to [Install aiw](#2-install-aiw).
 
@@ -86,8 +95,15 @@ Check what you have:
 ruby -v
 ```
 
-If that prints `ruby 3.4` or newer, you're set. macOS comes with Ruby 2.6 at `/usr/bin/ruby`, which is
-too old, so most Macs need a newer one. Pick **one** of these:
+If that prints `ruby 3.4` or newer, you're set. Otherwise, follow the steps for your system.
+
+The commands below add lines to `~/.zshrc`, which is the default shell config on macOS. If your shell
+is bash (the default on most Linux systems), use `~/.bashrc` and `exec bash` instead.
+
+#### macOS
+
+macOS comes with Ruby 2.6 at `/usr/bin/ruby`, which is too old, so most Macs need a newer one. Pick
+**one** of these:
 
 **Homebrew** (simplest if you don't use Ruby for anything else):
 
@@ -111,6 +127,25 @@ ruby -v
 rbenv, chruby and asdf work too. aiw's `.ruby-version` file asks for Ruby 3.4.1, and those tools
 switch to it as soon as you `cd` into the folder. So install that exact version even if you already
 have another 3.4. Step 2 shows how to check.
+
+#### Linux
+
+Check your distribution's Ruby first, because it is often too old. Fedora 42+ and Arch ship 3.4 or newer
+(`sudo dnf install ruby ruby-devel` or `sudo pacman -S ruby`). Ubuntu 24.04 ships 3.2 and Debian 13
+ships 3.3, so `apt install ruby` isn't enough there.
+
+If yours is too old, use [mise](https://mise.jdx.dev/getting-started.html). It builds Ruby from source,
+so on Debian or Ubuntu install the build tools first:
+
+```
+sudo apt install build-essential libssl-dev libyaml-dev zlib1g-dev libffi-dev libreadline-dev
+mise use -g ruby@3.4
+ruby -v
+```
+
+On other distributions, see [ruby-build's list of dependencies](https://github.com/rbenv/ruby-build/wiki#suggested-build-environment).
+
+#### Then, on any system
 
 Bundler, which installs the gems aiw needs, comes with Ruby 3.4, so there's nothing else to install.
 
@@ -137,11 +172,12 @@ Install that version and run `ruby -v` again:
 
 Homebrew users without a version manager can skip this. Their Ruby ignores `.ruby-version`.
 
-If `~/.local/bin` isn't on your PATH yet (`aiw` gives "command not found"), add it and open a new shell:
+If `~/.local/bin` isn't on your PATH yet (`aiw` gives "command not found"), add it and open a new shell.
+Many Linux systems already include it once the folder exists, after you log in again.
 
 ```
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
-exec zsh
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc    # or ~/.bashrc
+exec zsh                                                   # or exec bash
 ```
 
 ### 3. Build the index
@@ -164,9 +200,9 @@ To update aiw later, run `git pull` and then `bundle install` in the folder you 
 - **`cannot load such file -- sqlite3`**: aiw is running under a different Ruby than the one you ran
   `bundle install` with. Run `ruby -v` and `which ruby` in the same shell, fix your PATH (step 1), then
   run `bundle install` again.
-- **`bundle install` fails while compiling**: install Apple's command line tools with
-  `xcode-select --install` and try again.
-- **A source shows 0 conversations**: run `AIW_DEBUG=1 aiw import` to see which files failed and why.
+- **`bundle install` fails while compiling**: install a C compiler and try again. On macOS, run
+  `xcode-select --install`. On Debian or Ubuntu, run `sudo apt install build-essential`. On Fedora,
+  run `sudo dnf install gcc make ruby-devel`.- **A source shows 0 conversations**: run `AIW_DEBUG=1 aiw import` to see which files failed and why.
 
 ### Where things live
 

@@ -5,6 +5,19 @@ class RecapTest < Aiw::TestCase
     import_fixtures
   end
 
+  def test_web_conversations_open_with_the_platforms_browser_command
+    assert_equal "xdg-open https://claude.ai/chat/c-1", Aiw::RecapView.resume_command("Claude", "c-1", opener: "xdg-open")
+    assert_equal "start https://chatgpt.com/c/c-2", Aiw::RecapView.resume_command("ChatGPT", "c-2", opener: "start")
+    assert_equal "xdg-open https://chatgpt.com/codex/tasks/task_e_9",
+      Aiw::RecapView.resume_command("Codex", "task_e_9", opener: "xdg-open")
+  end
+
+  def test_cli_sessions_resume_the_same_way_everywhere
+    assert_equal "claude --resume s-1", Aiw::RecapView.resume_command("Claude Code", "s-1", opener: "xdg-open")
+    assert_equal "codex resume cdx-1", Aiw::RecapView.resume_command("Codex", "cdx-1", opener: "start")
+    assert_nil Aiw::RecapView.resume_command("Grok Bot", "bot-1")
+  end
+
   def test_includes_only_conversations_active_in_the_window
     report = recap("24h", now: Time.utc(2026, 8, 12, 12))
 
