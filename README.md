@@ -56,10 +56,27 @@ again to pick up newer chats.
 | Grok Bot    | `~/Library/Application Support/Grok Bot/sand-client-persistence` | The desktop app's local copy of each bot's transcript; the full history stays on xAI's servers. Each bot (e.g. Travel, Recipes) is one conversation. |
 | Claude      | `conversations-*.zip` (or older `data-*.zip`) in `~/Downloads` or `~/Documents` | claude.ai export (Settings → Privacy → Export data). The emailed manifest lists several zips; only the conversations one is needed. Re-export to pick up new chats. Results link back to `claude.ai/chat/<id>`. |
 | ChatGPT     | Export folder (or zip) in `~/Documents` or `~/Downloads`, recognized by its `chat.html` | chatgpt.com export (Settings → Data controls → Export data); the download link arrives by email. Only the newest export is read, so re-export to pick up new chats. Codex cloud tasks in `codex.json` are filed under Codex (no timestamps, so search only). Results link back to chatgpt.com. |
-| Muse        | `EYI Package_*.zip` in `~/Documents` or `~/Downloads` | Exported from the Muse desktop app. Muse keeps nothing on disk, so re-export to pick up new chats. Its one long chat is split into one conversation per day. |
+| Muse        | `EYI Package_*.zip` in `~/Documents` or `~/Downloads` | Muse desktop app: Settings → Data controls → Download your agent data → Download, then save the zip in Downloads or Documents when it asks where. Muse keeps no chats on disk (only login data and caches), so re-export to pick up new chats. Its one long chat is split into one conversation per day. |
 
 Only what you typed and what the assistant replied gets indexed. Thinking, tool calls, tool output and
 injected context (AGENTS.md, system reminders, environment blocks) are left out.
+
+### Keeping exports current
+
+Search can only find chats up to your last export, and nothing warns you when an export is old. A few
+habits help:
+
+- **Check how current each source is.** `aiw stats` shows each assistant's date range. If Muse,
+  Claude or ChatGPT ends days ago, it's time to export again.
+- **Export on a schedule.** Weekly is enough for most people: a recurring reminder, then a minute of
+  clicking.
+- **Clear out old exports.** Each export holds your whole history, so only the newest one matters.
+  ChatGPT's importer reads only the newest. For Claude and Muse, aiw reads every export and the
+  newest wins, so older ones just take up space. Muse exports are about 30 MB each.
+- **Scripting the Muse export is possible but delicate.** Muse draws its own Settings window, so a
+  script has to read the screen to find the button. "Reset" sits right below "Download your agent
+  data" and permanently deletes your Muse data, so a script must check the label before every click
+  and stop at anything unexpected.
 
 See [docs/ROADMAP.md](docs/ROADMAP.md) for planned
 features such as natural-language search and AI recap summaries.
