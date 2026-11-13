@@ -82,7 +82,7 @@ aiw is a Ruby command-line tool that needs Ruby 3.4 or newer.
 |----------|--------|
 | macOS    | Supported. This is where aiw is built and used every day. |
 | Linux    | Should work. The tests run on Ubuntu in CI, but nobody uses it there day to day yet. Every source except Grok Bot (a Mac app) reads the same `~/` paths. Reports are welcome. |
-| Windows  | Untested. Use [WSL](https://learn.microsoft.com/windows/wsl/install) and follow the Linux steps. Note that aiw inside WSL sees the Linux home folder, not your Windows one. |
+| Windows  | Untested. Use [WSL](https://learn.microsoft.com/windows/wsl/install) and follow the Linux steps, but read [Windows (WSL)](#windows-wsl) first: aiw there can't see your Windows folders. |
 
 Web results print the right command to open them for your platform: `open` on macOS, `xdg-open` on
 Linux, `start` on Windows.
@@ -93,6 +93,7 @@ Linux, `start` on Windows.
 brew install navjeetc/tap/aiw
 ```
 
+This works on macOS and on Linux (including WSL) with [Homebrew on Linux](https://docs.brew.sh/Homebrew-on-Linux).
 Homebrew installs the Ruby that aiw runs on, so skip steps 1 and 2 and go straight to
 [Build the index](#3-build-the-index). Upgrade later with `brew upgrade aiw`.
 
@@ -210,6 +211,20 @@ Exports from claude.ai, ChatGPT and Muse are picked up once you download them (s
 Claude Code, Codex and Grok Bot are read from their own folders, so no exports are needed.
 
 To update aiw later, run `git pull` and then `bundle install` in the folder you cloned.
+
+### Windows (WSL)
+
+Install WSL with `wsl --install` in an admin PowerShell, restart, then follow the Linux steps inside
+the Ubuntu it sets up. aiw runs in Linux there, so:
+
+- **It only sees the Linux home folder.** If you run Claude Code or Codex on Windows itself, their
+  history lives in `C:\Users\<you>\.claude` and `.codex`, and aiw won't find it. Run them inside WSL
+  instead, and aiw picks them up.
+- **Exports land in your Windows Downloads.** Copy the claude.ai, ChatGPT and Muse zips across before
+  `aiw import`: `cp /mnt/c/Users/<you>/Downloads/*.zip ~/Downloads/`.
+- **Grok Bot isn't available.** It's a Mac app.
+- **Web results may not open.** aiw prints `xdg-open <url>`, which often has no browser to open inside
+  WSL. Copy the URL into your Windows browser instead.
 
 ### Troubleshooting
 
