@@ -43,13 +43,19 @@ shell, wrap the double quotes in single quotes: `aiw '"packing list"'`.
 
 ## Sources
 
+Claude Code, Codex and Grok Bot save their chats in folders on your machine, and aiw reads those
+folders directly, so new chats show up on their own. claude.ai, ChatGPT and Muse keep your chats on
+their servers. For those, export your data from the app (the Notes column says where), save the
+download in `~/Downloads` or `~/Documents`, and aiw picks it up. An export is a snapshot, so export
+again to pick up newer chats.
+
 | Assistant   | Read from | Notes |
 |-------------|-----------|-------|
 | Claude Code | `~/.claude/projects/*/*.jsonl` | Titles come from your `/rename` or the auto title. Subagent transcripts are skipped. |
 | Codex       | `~/.codex/sessions`, `~/.codex/archived_sessions` | Thread names come from `session_index.jsonl`. Guardian/subagent sessions are skipped. |
 | Grok Bot    | `~/Library/Application Support/Grok Bot/sand-client-persistence` | The desktop app's local copy of each bot's transcript; the full history stays on xAI's servers. Each bot (e.g. Travel, Recipes) is one conversation. |
 | Claude      | `conversations-*.zip` (or older `data-*.zip`) in `~/Downloads` or `~/Documents` | claude.ai export (Settings → Privacy → Export data). The emailed manifest lists several zips; only the conversations one is needed. Re-export to pick up new chats. Results link back to `claude.ai/chat/<id>`. |
-| ChatGPT     | Export folder (or zip) in `~/Documents` or `~/Downloads`, recognized by its `chat.html` | chatgpt.com export (Settings → Data controls → Export data). Only the newest export is read. Codex cloud tasks in `codex.json` are filed under Codex (no timestamps, so search only). Results link back to chatgpt.com. |
+| ChatGPT     | Export folder (or zip) in `~/Documents` or `~/Downloads`, recognized by its `chat.html` | chatgpt.com export (Settings → Data controls → Export data); the download link arrives by email. Only the newest export is read, so re-export to pick up new chats. Codex cloud tasks in `codex.json` are filed under Codex (no timestamps, so search only). Results link back to chatgpt.com. |
 | Muse        | `EYI Package_*.zip` in `~/Documents` or `~/Downloads` | Exported from the Muse desktop app. Muse keeps nothing on disk, so re-export to pick up new chats. Its one long chat is split into one conversation per day. |
 
 Only what you typed and what the assistant replied gets indexed. Thinking, tool calls, tool output and
