@@ -174,6 +174,10 @@ mkdir -p ~/.local/bin
 ln -s "$PWD/bin/aiw" ~/.local/bin/aiw   # or anywhere on your PATH
 ```
 
+If you used **Code → Download ZIP** instead of `git clone`, the folder is called `aiw-main`. Move it
+somewhere permanent first (the link above points into it), then `cd aiw-main` and carry on from
+`ruby -v`. To update later, download a fresh ZIP, since `git pull` only works on a clone.
+
 If `cd` or `ruby -v` says 3.4.1 isn't installed, or `ruby -v` shows a different version, your version manager has read `.ruby-version`.
 Install that version and run `ruby -v` again:
 
