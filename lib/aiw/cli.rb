@@ -2,7 +2,7 @@ require "optparse"
 
 module Aiw
   class CLI
-    IMPORTERS = [ Importers::ClaudeCode, Importers::Claude, Importers::ChatGPT, Importers::Codex, Importers::GrokBot, Importers::Muse ]
+    IMPORTERS = [ Importers::ClaudeCode, Importers::Claude, Importers::ChatGPT, Importers::Codex, Importers::GrokBot, Importers::Muse, Importers::Perplexity ]
 
     USAGE = <<~TEXT
       Usage:
