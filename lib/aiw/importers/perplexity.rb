@@ -14,6 +14,7 @@ module Aiw
       ZIP = "user_data_export_*.zip"
       CONVERSATIONS = /\Aconversations-[^\/]*\.json\z/
       CITATION = /\[\d+\](?!\()/ # [1] markers that point at sources; Markdown links like [1](url) stay
+      CODE = /(```.*?(?:```|\z)|`[^`\n]*`)/m # fenced blocks and inline code, where values[0] is code, not a citation
 
       def self.default_root = "~"
 
@@ -47,7 +48,7 @@ module Aiw
         def thread(thread, path)
           messages = Array(thread["entries"]).flat_map do |entry|
             at = timestamp(entry["created_at"]) || timestamp(thread["created_at"])
-            [ message("user", entry["query"], at), message("assistant", entry["answer"].to_s.gsub(CITATION, ""), at) ]
+            [ message("user", entry["query"], at), message("assistant", without_citations(entry["answer"].to_s), at) ]
           end.compact
 
           Conversation.new(
@@ -60,6 +61,11 @@ module Aiw
             updated_at: messages.last&.created_at || timestamp(thread["updated_at"]),
             path:,
             messages:)
+        end
+
+        # split with a capture group alternates prose and code, so the odd parts are code and stay as written.
+        def without_citations(answer)
+          answer.split(CODE).each_with_index.map { |part, i| i.odd? ? part : part.gsub(CITATION, "") }.join
         end
 
         def message(role, text, created_at)

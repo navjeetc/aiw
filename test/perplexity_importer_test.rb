@@ -53,6 +53,15 @@ class PerplexityImporterTest < Aiw::TestCase
     assert_equal "Open account details. See [the docs](https://x.test).", answer
   end
 
+  def test_keeps_numeric_brackets_inside_code
+    answer = "Read the first item[1]:\n\n```python\nvalues[0]\nids = [12345]\n```\n\nor use `values[0]`[2]."
+    export "Downloads", [ thread(entries: [ entry("How do I index a list?", answer) ]) ]
+
+    text = @importer.parse(@importer.files.first).first.messages.last.text
+
+    assert_equal "Read the first item:\n\n```python\nvalues[0]\nids = [12345]\n```\n\nor use `values[0]`.", text
+  end
+
   def test_skips_empty_questions_and_answers
     export "Downloads", [ thread(entries: [ entry("", "An answer with no question"), entry("A failed question", "") ]) ]
 
