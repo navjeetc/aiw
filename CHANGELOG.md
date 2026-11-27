@@ -6,6 +6,11 @@ All notable changes to aiw are listed here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Perplexity: aiw reads the data export (Settings → Account → Data export, a `user_data_export_*.zip`
+  in Downloads or Documents). Each thread is one conversation.
+
 ## [0.2.0] - 2026-11-11
 
 ### Added

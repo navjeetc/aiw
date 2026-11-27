@@ -44,10 +44,10 @@ shell, wrap the double quotes in single quotes: `aiw '"packing list"'`.
 ## Sources
 
 Claude Code, Codex and Grok Bot save their chats in folders on your machine, and aiw reads those
-folders directly, so new chats show up on their own. claude.ai, ChatGPT and Muse keep your chats on
-their servers. For those, export your data from the app (the Notes column says where), save the
-download in `~/Downloads` or `~/Documents`, and aiw picks it up. An export is a snapshot, so export
-again to pick up newer chats.
+folders directly, so new chats show up on their own. claude.ai, ChatGPT, Muse and Perplexity keep
+your chats on their servers. For those, export your data from the app (the Notes column says where),
+save the download in `~/Downloads` or `~/Documents`, and aiw picks it up. An export is a snapshot, so
+export again to pick up newer chats.
 
 | Assistant   | Read from | Notes |
 |-------------|-----------|-------|
@@ -57,6 +57,7 @@ again to pick up newer chats.
 | Claude      | `conversations-*.zip` (or older `data-*.zip`) in `~/Downloads` or `~/Documents` | claude.ai export (Settings → Privacy → Export data). The emailed manifest lists several zips; only the conversations one is needed. Re-export to pick up new chats. Results link back to `claude.ai/chat/<id>`. |
 | ChatGPT     | Export folder (or zip) in `~/Documents` or `~/Downloads`, recognized by its `chat.html` | chatgpt.com export (Settings → Data controls → Export data); the download link arrives by email. Only the newest export is read, so re-export to pick up new chats. Codex cloud tasks in `codex.json` are filed under Codex (no timestamps, so search only). Results link back to chatgpt.com. |
 | Muse        | `EYI Package_*.zip` in `~/Documents` or `~/Downloads` | Muse desktop app: Settings → Data controls → Download your agent data → Download, then save the zip in Downloads or Documents when it asks where. Muse keeps no chats on disk (only login data and caches), so re-export to pick up new chats. Its one long chat is split into one conversation per day. |
+| Perplexity  | `user_data_export_*.zip` (or the unzipped folder) in `~/Documents` or `~/Downloads` | perplexity.ai export (Settings → Account → Data export); the download link arrives by email. The Mac app keeps no threads on disk. Only the newest export is read, so re-export to pick up new threads. Each thread is one conversation; `[1]`-style citation markers are dropped from answers. |
 
 Only what you typed and what the assistant replied gets indexed. Thinking, tool calls, tool output and
 injected context (AGENTS.md, system reminders, environment blocks) are left out.
@@ -67,12 +68,12 @@ Search can only find chats up to your last export, and nothing warns you when an
 habits help:
 
 - **Check how current each source is.** `aiw stats` shows each assistant's date range. If Muse,
-  Claude or ChatGPT ends days ago, it's time to export again.
+  Claude, ChatGPT or Perplexity ends days ago, it's time to export again.
 - **Export on a schedule.** Weekly is enough for most people: a recurring reminder, then a minute of
   clicking.
 - **Clear out old exports.** Each export holds your whole history, so only the newest one matters.
-  ChatGPT's importer reads only the newest. For Claude and Muse, aiw reads every export and the
-  newest wins, so older ones just take up space. Muse exports are about 30 MB each.
+  The ChatGPT and Perplexity importers read only the newest. For Claude and Muse, aiw reads every
+  export and the newest wins, so older ones just take up space. Muse exports are about 30 MB each.
 - **Scripting the Muse export is possible but delicate.** Muse draws its own Settings window, so a
   script has to read the screen to find the button. "Reset" sits right below "Download your agent
   data" and permanently deletes your Muse data, so a script must check the label before every click
@@ -230,8 +231,9 @@ aiw stats     # what got indexed
 aiw recap     # what you worked on in the last 24 hours
 ```
 
-Exports from claude.ai, ChatGPT and Muse are picked up once you download them (see [Sources](#sources)).
-Claude Code, Codex and Grok Bot are read from their own folders, so no exports are needed.
+Exports from claude.ai, ChatGPT, Muse and Perplexity are picked up once you download them (see
+[Sources](#sources)). Claude Code, Codex and Grok Bot are read from their own folders, so no exports
+are needed.
 
 To update aiw later, run `git pull` and then `bundle install` in the folder you cloned.
 
@@ -243,8 +245,8 @@ the Ubuntu it sets up. aiw runs in Linux there, so:
 - **It only sees the Linux home folder.** If you run Claude Code or Codex on Windows itself, their
   history lives in `C:\Users\<you>\.claude` and `.codex`, and aiw won't find it. Run them inside WSL
   instead, and aiw picks them up.
-- **Exports land in your Windows Downloads.** Copy the claude.ai, ChatGPT and Muse zips across before
-  `aiw import`: `cp /mnt/c/Users/<you>/Downloads/*.zip ~/Downloads/`.
+- **Exports land in your Windows Downloads.** Copy the claude.ai, ChatGPT, Muse and Perplexity zips
+  across before `aiw import`: `cp /mnt/c/Users/<you>/Downloads/*.zip ~/Downloads/`.
 - **Grok Bot isn't available.** It's a Mac app.
 - **Web results may not open.** aiw prints `xdg-open <url>`, which often has no browser to open inside
   WSL. Copy the URL into your Windows browser instead.
